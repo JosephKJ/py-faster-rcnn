@@ -101,6 +101,12 @@ if __name__ == '__main__':
     caffe.set_mode_gpu()
     caffe.set_device(args.gpu_id)
 
+    # imdb : images obj, roidb: ground truth annotations.
+    # A roidb is a list of dictionaries, each with the following keys:
+    #   boxes
+    #   gt_overlaps
+    #   gt_classes
+    #   flipped
     imdb, roidb = combined_roidb(args.imdb_name)
     print '{:d} roidb entries'.format(len(roidb))
 
