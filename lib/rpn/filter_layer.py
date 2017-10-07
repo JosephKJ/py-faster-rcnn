@@ -29,6 +29,7 @@ class FilterLayer(caffe.Layer):
 
     def forward(self, bottom, top):
         print 'Inside FilterLayer:forward'
+        top[0].data[...] = bottom[1].data
 
     def backward(self, top, propagate_down, bottom):
         """This layer does not propagate gradients."""
