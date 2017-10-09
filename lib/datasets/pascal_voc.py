@@ -220,8 +220,8 @@ class pascal_voc(imdb):
             if distort_gt_boxes:
                 x1 = (x1 - margin) if (x1 - margin) >= 0 else 0
                 y1 = (y1 - margin) if (y1 - margin) >= 0 else 0
-                x2 = (x2 + margin) if (x2 + margin) <= img_width else img_width
-                y2 = (y2 + margin) if (y2 + margin) <= img_height else img_height
+                x2 = (x2 + margin) if (x2 + margin) <= img_width else img_width - 1
+                y2 = (y2 + margin) if (y2 + margin) <= img_height else img_height - 1
 
             cls = self._class_to_ind[obj.find('name').text.lower().strip()]
             boxes[ix, :] = [x1, y1, x2, y2]
