@@ -7,6 +7,7 @@
 import caffe
 import numpy as np
 import yaml
+import matplotlib.pyplot as plt
 from fast_rcnn.config import cfg
 from generate_anchors import generate_anchors
 from fast_rcnn.bbox_transform import bbox_transform_inv, clip_boxes
@@ -29,6 +30,15 @@ class FilterLayer(caffe.Layer):
 
     def forward(self, bottom, top):
         print 'Inside FilterLayer:forward'
+
+        print bottom[0].data.shape
+        feature_sum = np.sum(bottom[0].data[0], axis=0)
+        print feature_sum.shape
+        self.display_image(feature_sum)
+
+        print bottom[1].data.shape
+        print bottom[1].data
+
         top[0].reshape(*(bottom[1].data.shape))
         top[0].data[...] = bottom[1].data
         print 'Done FilterLayer:forward'
@@ -40,3 +50,12 @@ class FilterLayer(caffe.Layer):
     def reshape(self, bottom, top):
         """Reshaping happens during the call to forward."""
         pass
+
+    def display_image(self, image):
+        # plt.axis('off')
+        frame1 = plt.gca()
+        frame1.axes.get_xaxis().set_ticks([])
+        frame1.axes.get_yaxis().set_ticks([])
+        plt.imshow(image)
+        plt.savefig("/home/joseph/workspace/sdd-py-faster-rcnn/data/staging/heatmap.png")
+        # plt.show()

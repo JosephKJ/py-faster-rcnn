@@ -121,6 +121,18 @@ class ProposalLayer(caffe.Layer):
         # Convert anchors into proposals via bbox transformations
         proposals = bbox_transform_inv(anchors, bbox_deltas)
 
+        # Debug: Starts
+        print anchors.shape
+        print bbox_deltas.shape
+        print proposals.shape
+        print '------**------'
+        print anchors[0]
+        print bbox_deltas[0]
+        print proposals[0]
+        # Debug: Ends
+
+
+
         # 2. clip predicted boxes to image
         proposals = clip_boxes(proposals, im_info[:2])
 

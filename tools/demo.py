@@ -117,8 +117,8 @@ if __name__ == '__main__':
 
     args = parse_args()
 
-    prototxt = os.path.join(cfg.MODELS_DIR, NETS[args.demo_net][0],
-                            'faster_rcnn_alt_opt', 'faster_rcnn_test.pt')
+    # prototxt = os.path.join(cfg.MODELS_DIR, NETS[args.demo_net][0],
+    #                         'faster_rcnn_alt_opt', 'faster_rcnn_test.pt')
     prototxt = os.path.join(cfg.MODELS_DIR, NETS[args.demo_net][0],
                             'faster_rcnn_alt_opt', 'faster_rcnn_with_filter_test.pt')
     caffemodel = os.path.join(cfg.DATA_DIR, 'faster_rcnn_models',
@@ -143,11 +143,13 @@ if __name__ == '__main__':
     for i in xrange(2):
         _, _= im_detect(net, im)
 
-    im_names = ['000456.jpg', '000542.jpg', '001150.jpg',
-                '001763.jpg', '004545.jpg']
+    # im_names = ['000456.jpg', '000542.jpg', '001150.jpg',
+    #             '001763.jpg', '004545.jpg']
+
+    im_names = ['004545.jpg']
     for im_name in im_names:
         print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
         print 'Demo for data/demo/{}'.format(im_name)
         demo(net, im_name)
 
-    plt.show()
+    # plt.show()
