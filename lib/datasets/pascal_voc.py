@@ -218,7 +218,8 @@ class pascal_voc(imdb):
             y2 = float(bbox.find('ymax').text) - 1
 
             print 'Before:'
-            print x1, y1, x2, y2
+            print filename
+            print x1, y1, x2, y2, img_width, img_height
             if distort_gt_boxes:
                 x1 = (x1 - margin) if (x1 - margin) >= 0 else 0
                 y1 = (y1 - margin) if (y1 - margin) >= 0 else 0
