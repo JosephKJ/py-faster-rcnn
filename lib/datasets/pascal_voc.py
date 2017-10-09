@@ -182,9 +182,16 @@ class pascal_voc(imdb):
         Load image and bounding boxes info from XML file in the PASCAL VOC
         format.
         """
+
+        distort_gt_boxes = True
+        margin = 30  # pixels
+
         filename = os.path.join(self._data_path, 'Annotations', index + '.xml')
         tree = ET.parse(filename)
         objs = tree.findall('object')
+        img_width = float(tree.find('size').find('width').text)
+        img_height = float(tree.find('size').find('height').text)
+
         if not self.config['use_diff']:
             # Exclude the samples labeled as difficult
             non_diff_objs = [
@@ -209,6 +216,17 @@ class pascal_voc(imdb):
             y1 = float(bbox.find('ymin').text) - 1
             x2 = float(bbox.find('xmax').text) - 1
             y2 = float(bbox.find('ymax').text) - 1
+
+            print 'Before:'
+            print x1, y1, x2, y2
+            if distort_gt_boxes:
+                x1 = (x1 - margin) if (x1 - margin) >= 0 else 0
+                y1 = (y1 - margin) if (y1 - margin) >= 0 else 0
+                x2 = (x2 + margin) if (x2 + margin) <= img_width else img_width
+                y2 = (y2 + margin) if (y2 + margin) <= img_height else img_height
+            print 'After:'
+            print x1, y1, x2, y2
+
             cls = self._class_to_ind[obj.find('name').text.lower().strip()]
             boxes[ix, :] = [x1, y1, x2, y2]
             gt_classes[ix] = cls
@@ -216,6 +234,8 @@ class pascal_voc(imdb):
             seg_areas[ix] = (x2 - x1 + 1) * (y2 - y1 + 1)
 
         overlaps = scipy.sparse.csr_matrix(overlaps)
+
+        raise EnvironmentError()
 
         return {'boxes' : boxes,
                 'gt_classes': gt_classes,
