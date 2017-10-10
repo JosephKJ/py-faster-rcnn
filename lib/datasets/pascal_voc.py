@@ -184,7 +184,7 @@ class pascal_voc(imdb):
         """
 
         distort_gt_boxes = True
-        margin = 30  # pixels
+        margin = 15  # pixels
 
         filename = os.path.join(self._data_path, 'Annotations', index + '.xml')
         tree = ET.parse(filename)
