@@ -12,5 +12,5 @@ weight_decay: 0.0005
 # function
 snapshot: 0
 # We still use the snapshot prefix, though
-snapshot_prefix: "vgg16_faster_rcnn_perturbed_filtered_real_30"
+snapshot_prefix: "vgg16_faster_rcnn_perturbed_filtered_15"
 iter_size: 2
