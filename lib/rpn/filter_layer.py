@@ -40,12 +40,27 @@ class FilterLayer(caffe.Layer):
         # Generating the mask
         feature_sum = np.sum(feature_map, axis=0)
         feature_sum_normalized = (255 * (feature_sum - np.min(feature_sum)) / np.ptp(feature_sum)).astype(int)
-        threshold = feature_sum_normalized.mean() + self._threshold_intercept
-        binary_map = np.where(feature_sum_normalized > threshold, 1, 0)
+        # threshold = feature_sum_normalized.mean() + self._threshold_intercept
+        threshold = 10
+        binary_map = np.where(feature_sum_normalized > threshold, 1., 0.)
 
         # Removing the background
         feature_map_filtered = feature_map * binary_map
+
+        # print "feature_map (first row): ", feature_map[0][-1]
+        # print "feature_map_filtered (first row): ", feature_map_filtered[0][-1]
+        # print feature_map
+        # print '>>><<<'
+        # print feature_map_filtered
+        # np.set_printoptions(threshold='nan')
+        # print binary_map
+
+        # self.display_image(feature_sum, display=True)
+        # self.display_image(feature_sum_normalized, display=True)
+        # print feature_sum_normalized
+        # print "threshold", threshold
         # self.display_image(binary_map, display=True)
+        #
         # assert False
 
         # Removing umwanted ROIs
