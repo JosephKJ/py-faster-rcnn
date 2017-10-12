@@ -45,9 +45,8 @@ class FilterLayer(caffe.Layer):
 
         # Removing the background
         feature_map_filtered = feature_map * binary_map
-        self.display_image(binary_map, display=True)
-
-        assert False
+        # self.display_image(binary_map, display=True)
+        # assert False
 
         # Removing umwanted ROIs
         rejected_index = []
