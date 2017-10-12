@@ -61,7 +61,7 @@ NET_FINAL=`grep -B 1 "done solving" ${LOG} | grep "Wrote snapshot" | awk '{print
 set -x
 
 time ./tools/test_net.py --gpu ${GPU_ID} \
-  --def models/${PT_DIR}/${NET}/faster_rcnn_end2end/test.prototxt \
+  --def models/${PT_DIR}/${NET}/faster_rcnn_end2end/test_with_filter.prototxt \
   --net ${NET_FINAL} \
   --imdb ${TEST_IMDB} \
   --cfg experiments/cfgs/faster_rcnn_end2end.yml \
