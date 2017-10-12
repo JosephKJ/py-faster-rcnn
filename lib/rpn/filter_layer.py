@@ -17,35 +17,37 @@ DEBUG = False
 
 class FilterLayer(caffe.Layer):
     """
-    Filter thr RPNs and fo back ground subtraction on them.
+    Filter thr RPNs and do back ground-subtraction on them.
     """
 
     def setup(self, bottom, top):
         # parse the layer parameter string, which must be valid YAML
         layer_params = yaml.load(self.param_str_)
+        self._spatial_scale = layer_params.get('spatial_scale', 0.0625)
 
-        # self._feat_stride = layer_params['feat_stride']
-        # anchor_scales = layer_params.get('scales', (8, 16, 32))
-        pass
+        top[0].reshape(*(bottom[0].data.shape))
+        top[1].reshape(*(bottom[1].data.shape))
 
     def forward(self, bottom, top):
         print 'Inside FilterLayer:forward'
 
         print bottom[0].data.shape
+        print bottom[1].data.shape
+
         feature_sum = np.sum(bottom[0].data[0], axis=0)
         print feature_sum.shape
         self.display_image(feature_sum)
 
-        print bottom[1].data.shape
-        print bottom[1].data
+        top[0].reshape(*(bottom[0].data.shape))
+        top[0].data[...] = bottom[0].data
 
-        top[0].reshape(*(bottom[1].data.shape))
-        top[0].data[...] = bottom[1].data
+        top[1].reshape(*(bottom[1].data.shape))
+        top[1].data[...] = bottom[1].data
         print 'Done FilterLayer:forward'
 
     def backward(self, top, propagate_down, bottom):
-        """This layer does not propagate gradients."""
-        pass
+        """Passing the gradients for the conv layers as is."""
+        bottom[0].diff[...] = top[0].diff[...]
 
     def reshape(self, bottom, top):
         """Reshaping happens during the call to forward."""
@@ -58,4 +60,4 @@ class FilterLayer(caffe.Layer):
         frame1.axes.get_yaxis().set_ticks([])
         plt.imshow(image)
         plt.savefig("/home/joseph/workspace/sdd-py-faster-rcnn/data/staging/heatmap.png")
-        # plt.show()
+        plt.show()

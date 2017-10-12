@@ -90,6 +90,8 @@ class AnchorTargetLayer(caffe.Layer):
             print 'rpn: gt_boxes', gt_boxes
 
         # 1. Generate proposals from bbox deltas and shifted anchors
+        # JKJ: This is where the width of the feature map gets stretched into the
+        # width of the input image.
         shift_x = np.arange(0, width) * self._feat_stride
         shift_y = np.arange(0, height) * self._feat_stride
         shift_x, shift_y = np.meshgrid(shift_x, shift_y)
@@ -152,6 +154,8 @@ class AnchorTargetLayer(caffe.Layer):
         if cfg.TRAIN.RPN_CLOBBER_POSITIVES:
             # assign bg labels last so that negative labels can clobber positives
             labels[max_overlaps < cfg.TRAIN.RPN_NEGATIVE_OVERLAP] = 0
+
+        # TODO: Remove those positive samples that have low objectness.
 
         # subsample positive labels if we have too many
         num_fg = int(cfg.TRAIN.RPN_FG_FRACTION * cfg.TRAIN.RPN_BATCHSIZE)
@@ -247,6 +251,13 @@ class AnchorTargetLayer(caffe.Layer):
         assert bbox_outside_weights.shape[3] == width
         top[3].reshape(*bbox_outside_weights.shape)
         top[3].data[...] = bbox_outside_weights
+
+        if DEBUG:
+            print 'Labels: ', labels.shape
+            print 'bbox_targets: ', bbox_targets.shape
+            print 'bbox_inside_weights: ', bbox_inside_weights.shape
+            print 'bbox_outside_weights: ', bbox_outside_weights.shape
+
 
     def backward(self, top, propagate_down, bottom):
         """This layer does not propagate gradients."""
