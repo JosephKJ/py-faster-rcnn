@@ -61,6 +61,7 @@ class FilterLayer(caffe.Layer):
                 rejected_index.append(index)
 
         # rois = np.delete(rois, rejected_index, axis=0)
+        # print len(rejected_index), ' of ', roi_count, ' has been rejected.'
 
         top[0].reshape(*(bottom[0].data.shape))
         top[0].data[...] = feature_map_filtered
