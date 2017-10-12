@@ -24,8 +24,8 @@ class FilterLayer(caffe.Layer):
         # parse the layer parameter string, which must be valid YAML
         layer_params = yaml.load(self.param_str_)
         self._spatial_scale = layer_params.get('spatial_scale', 0.0625)
-        self._threshold_intercept = layer_params.get('threshold_intercept', 0)
-        self._active_pixel_count = layer_params.get('active_pixel_count', 10)
+        self._threshold_intercept = layer_params.get('threshold_intercept', -10)
+        self._active_pixel_count = layer_params.get('active_pixel_count', 5)
 
         top[0].reshape(*(bottom[0].data.shape))
         top[1].reshape(*(bottom[1].data.shape))
@@ -45,6 +45,8 @@ class FilterLayer(caffe.Layer):
 
         # Removing the background
         feature_map_filtered = feature_map * binary_map
+        self.display_image(binary_map, display=True)
+        assert False
 
         # Removing umwanted ROIs
         rejected_index = []
